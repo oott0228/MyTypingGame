@@ -15,17 +15,29 @@
 
     let word;
     let loc = 0;
+    let count = 4;
     let startTime;
     let isPlaying = false;
     const target = document.getElementById('target');
 
-   document.addEventListener('click', () => {
-       if (isPlaying === true) {
-           return;
-       }
-       isPlaying = true;
-       startTime = Date.now();
-        setWord();
+    document.addEventListener('click', () => {
+        if (isPlaying === true) {
+            return;
+            }
+
+        const countDown = () => {
+            count--;
+            target.textContent = count;
+        } 
+        const intervalId = setInterval(() => {
+            countDown();
+            if(count < 2) {
+                clearInterval(intervalId);
+            }}, 1000);
+
+        isPlaying = true;
+        startTime = Date.now() + 4000;
+        setTimeout(setWord, 4000);
    });
 
     document.addEventListener('keydown', e => {
