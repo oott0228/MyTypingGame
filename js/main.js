@@ -2,23 +2,50 @@
 
 {
     function setWord() {
+        countDown();
         word = words.splice(Math.floor(Math.random() * words.length), 1)[0];
         target.textContent = word;
         loc = 0;
     }
 
+    function countDown() {
+        limitTime = 6;
+        if(loc === 0) {
+            const countDown = () => {
+                limitTime--;
+                limit.textContent = limitTime;
+            } 
+            const intervalId = setInterval(() => {
+            countDown();
+    
+            if(limitTime < 2) {
+                clearInterval(intervalId);
+                target.textContent = 'Game Over!';
+            }}, 1000);  
+        }
+    }
     const words = [
         'red',
         'blue',
-        'pink'
+        'pink',
+        'white',
+        'purple',
+        'black',
+        'yellow',
+        'orange',
+        'green'
     ];
 
     let word;
     let loc = 0;
     let count = 4;
-    let startTime;
+    let startTime; 
     let isPlaying = false;
+    let isWrong = false;
+    let limitTime;
+    const index = words.length;
     const target = document.getElementById('target');
+    const limit = document.getElementById('limit');
 
     document.addEventListener('click', () => {
         if (isPlaying === true) {
@@ -40,11 +67,21 @@
         setTimeout(setWord, 4000);
    });
 
+
     document.addEventListener('keydown', e => {
         if(e.key !== word[loc]) {
+            isWrong = true;
+            if(isWrong) {
+                target.style.backgroundColor = 'red';
+            }
             return;
         }
-        
+
+        isWrong = false;
+        if(!isWrong) {
+            target.style.backgroundColor = 'transparent';
+        }
+
         loc++;
         target.textContent = '_'.repeat(loc) + word.substring(loc);
 
@@ -56,6 +93,7 @@
                 return;
             }
             setWord();
+
         }
     });
 }
