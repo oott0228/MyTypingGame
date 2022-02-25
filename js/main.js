@@ -21,6 +21,7 @@
             if(limitTime < 2) {
                 clearInterval(intervalId);
                 target.textContent = 'Game Over!';
+                target.style.backgroundColor = 'red'
             }}, 1000);  
         }
     }
