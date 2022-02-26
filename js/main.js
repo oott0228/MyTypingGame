@@ -10,20 +10,21 @@
 
     function countDown() {
         limitTime = 6;
-        if(loc === 0) {
-            const countDown = () => {
-                limitTime--;
-                limit.textContent = limitTime;
-            } 
-            const intervalId = setInterval(() => {
-            countDown();
-    
-            if(limitTime < 2) {
-                clearInterval(intervalId);
-                target.textContent = 'Game Over!';
-                target.style.backgroundColor = 'red'
-            }}, 1000);  
-        }
+        if(loc !== 0) { return; } 
+
+        const countDown = () => {
+            limitTime--;
+            limit.textContent = limitTime;
+        } 
+
+        const intervalId = setInterval(() => {
+        countDown();
+
+        if (limitTime < 2) {
+            clearInterval(intervalId);
+            target.textContent = 'Game Over!';
+            target.style.backgroundColor = 'red'
+        }}, 1000);
     }
     const words = [
         'red',
@@ -49,14 +50,13 @@
     const limit = document.getElementById('limit');
 
     document.addEventListener('click', () => {
-        if (isPlaying === true) {
-            return;
-            }
+        if (isPlaying) { return; }
 
         const countDown = () => {
             count--;
             target.textContent = count;
         } 
+
         const intervalId = setInterval(() => {
             countDown();
             if(count < 2) {
@@ -66,35 +66,27 @@
         isPlaying = true;
         startTime = Date.now() + 4000;
         setTimeout(setWord, 4000);
-   });
-
+    });
 
     document.addEventListener('keydown', e => {
         if(e.key !== word[loc]) {
-            isWrong = true;
-            if(isWrong) {
-                target.style.backgroundColor = 'red';
-            }
+            target.style.backgroundColor = 'red';
             return;
-        }
-
-        isWrong = false;
-        if(!isWrong) {
+        } else {
             target.style.backgroundColor = 'transparent';
         }
 
         loc++;
         target.textContent = '_'.repeat(loc) + word.substring(loc);
 
-        if (loc === word.length) {
-            if (words.length === 0) {
-                const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(2);
-                const result = document.getElementById('result');
-                result.textContent = `Finished! ${elapsedTime} seconds!`;
-                return;
-            }
-            setWord();
+        if (loc !== word.length) { return; }
 
+        if (words.length === 0) {
+            const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(2);
+            const result = document.getElementById('result');
+            result.textContent = `Finished! ${elapsedTime} seconds!`;
+            return;
         }
+        setWord();
     });
 }
