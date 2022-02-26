@@ -25,6 +25,7 @@
             }}, 1000);  
         }
     }
+    
     const words = [
         'red',
         'blue',
