@@ -13,7 +13,7 @@ class Countdown {
         this.intervalId = setInterval(() => {
             this.count--;
             this.element.textContent = this.count;
-            if (this.count < 1) {
+            if (this.count <= 0) {
                 clearInterval(this.intervalId);
             }
         }, 1000);
@@ -73,23 +73,49 @@ class TypingGame {
     }
 }
 
-//     function countDown() {
-//         limitTime = 10;
-//         limit.style.visibility = 'visible'; // 2回目最初変な数字が表示されてしまう。3回目以降カウントダウンが表示されない。
-//         if (loc !== 0) { return; }
+class LimitTime {
+    constructor() {
+        this.limitTime;
+        this.limit = document.getElementById('limit');
+        this.intervalId = null;
+    }
+    // this.limit.style.visibility = 'visible';  不要？
+    // if (loc !== 0) { return; }  不要？違うクラス内で書く？locをこのクラスでも使えるようにする？
 
-//         const countDown = () => {
-//             limitTime--;
-//             limit.textContent = limitTime;
-//         }
+    // nextWord()と同時に呼び出したい
+    // TypingGameクラスのnextWord()の下に書く？nextWord()の中で呼び出す？
+    start() {
+        this.limitTime = 10;
+        this.limit.style.backgroundColor = 'transparent';
+        this.intervalId = setInterval(() => {
+            this.limitTime--;
+            this.limit.textContent = this.limitTime;
+            if (this.limitTime <= 0) {
+                clearInterval(this.intervalId);
+                this.limit.textContent = 'Game Over!';
+                this.limit.style.backgroundColor = 'red';
+                }
+            }, 1000);
+        }
+}
+
+class Result {
+    constructor() {
+        this.startTime = Date.now(); // 1単語目が始まった時にDate.now()が入るようにしたい
+        this.elapsedTime = ((Date.now() - this.startTime) / 1000).toFixed(2);
+        this.result = document.getElementById('result');
+    }
+    //currentIndex === words.lengthの時にこのメソッドを呼びたい
+    // TypingGameクラス内でこのメソッドを呼び出す？このクラスでcurrentIndexやwords.lengthなどを使えるようにする？
+    showResult() {
+        this.result.textContent = `Finished! ${this.elapsedTime} seconds!`;
+    }
+}
 
 //         const intervalId = setInterval(() => {
 //             countDown();
-
 //             if (limitTime < 1) {
 //                 clearInterval(intervalId);
-//                 target.textContent = 'Game Over!';
-//                 target.style.backgroundColor = 'red';
 
 //                 replay.textContent = 'Click to Replay!';
 //                 replay.style.visibility = 'visible';
@@ -97,8 +123,6 @@ class TypingGame {
 //         }, 1000);
 //     }
 
-
-//     const limit = document.getElementById('limit');
 //     const replay = document.getElementById('replay');
 
 //     replay.addEventListener('click', () => {
@@ -125,20 +149,8 @@ class TypingGame {
 //         if (isPlaying) { return; }
 //         index = 0;
 
-//         const countDown = () => {
-//             count--;
-//             target.textContent = count;
-//         }
-//         const intervalId = setInterval(() => {
-//             countDown();
-//             if (count < 2) {
-//                 clearInterval(intervalId);
-//             }
-//         }, 1000);
-
 //         isPlaying = true;
 //         startTime = Date.now() + 4000;
-//         shuffleWords(words);
 //         setTimeout(setWord, 4000);
 //     });
 
@@ -154,9 +166,7 @@ class TypingGame {
 //             target.style.visibility = 'hidden';
 //             limit.style.visibility = 'hidden';
 //             replay.textContent = 'Click to Replay!';
-//             const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(2);
-//             const result = document.getElementById('result');
-//             result.textContent = `Finished! ${elapsedTime} seconds!`;
+
 //             result.style.visibility = 'visible';
 //             replay.style.visibility = 'visible';
 //             return;
