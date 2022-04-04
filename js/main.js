@@ -17,8 +17,12 @@ class Countdown {
                 clearInterval(this.intervalId);
             }
         }, 1000);
+
+        TypingGame.getStarttime(); 
+        setTimeout()
     }
 }
+
 
 class TypingGame {
     constructor() {
@@ -40,6 +44,19 @@ class TypingGame {
         this.shuffledList = [];
         this.currentIndex = 0;
         this.target = document.getElementById('target');
+        this.startTime = '';
+    }
+
+        // target.addEventListener('click', Countdown.start()); 
+        //　↑buttonタグでonclickの方が良い？メソッドの中に入れないといけない？メソッドに入れるとしたらクリックイベントはどうやって設定するのか
+            
+        //if (isPlaying) { return; }
+        //isPlaying = true;
+        //↑ゲーム開始された判定はメソッド作る？
+
+
+    getStarttime() {
+        this.startTime = Date.now() + 3000; //ここで良い？
     }
 
     start() {
@@ -79,7 +96,7 @@ class LimitTime {
         this.limit = document.getElementById('limit');
         this.intervalId = null;
     }
-    // this.limit.style.visibility = 'visible';  不要？
+    // this.limit.style.display = 'block';  不要？
     // if (loc !== 0) { return; }  不要？違うクラス内で書く？locをこのクラスでも使えるようにする？
 
     // nextWord()と同時に呼び出したい
@@ -94,15 +111,14 @@ class LimitTime {
                 clearInterval(this.intervalId);
                 this.limit.textContent = 'Game Over!';
                 this.limit.style.backgroundColor = 'red';
-                }
-            }, 1000);
-        }
+            }
+        }, 1000);
+    }
 }
 
 class Result {
     constructor() {
-        this.startTime = Date.now(); // 1単語目が始まった時にDate.now()が入るようにしたい
-        this.elapsedTime = ((Date.now() - this.startTime) / 1000).toFixed(2);
+        this.elapsedTime = ((Date.now() - this.startTime) / 1000).toFixed(2); //startTime　TypingGameクラスから持ってこないといけない
         this.result = document.getElementById('result');
     }
     //currentIndex === words.lengthの時にこのメソッドを呼びたい
@@ -112,13 +128,17 @@ class Result {
     }
 }
 
+
+
+//  ↓まだクラス化していない部分など
+
 //         const intervalId = setInterval(() => {
 //             countDown();
 //             if (limitTime < 1) {
 //                 clearInterval(intervalId);
 
 //                 replay.textContent = 'Click to Replay!';
-//                 replay.style.visibility = 'visible';
+//                 replay.style.display = 'block';
 //             }
 //         }, 1000);
 //     }
@@ -126,11 +146,11 @@ class Result {
 //     const replay = document.getElementById('replay');
 
 //     replay.addEventListener('click', () => {
-//         result.style.visibility = 'hidden';
-//         replay.style.visibility = 'hidden';
+//         result.style.display = 'none';
+//         replay.style.display = 'none';
 //         target.textContent = '';
 //         limit.textContent = '';
-//         target.style.visibility = 'visible';
+//         target.style.display = 'block';
 //         isWrong = false;
 //         isPlaying = false;
 
@@ -145,14 +165,7 @@ class Result {
 //         setTimeout(setWord, 4000);
 //     });
 
-//     target.addEventListener('click', () => {
-//         if (isPlaying) { return; }
-//         index = 0;
 
-//         isPlaying = true;
-//         startTime = Date.now() + 4000;
-//         setTimeout(setWord, 4000);
-//     });
 
 //     document.addEventListener('keydown', e => {
 //         if (e.key !== word[loc]) {
@@ -163,12 +176,12 @@ class Result {
 //         }
 
 //         if (index === words.length) {
-//             target.style.visibility = 'hidden';
-//             limit.style.visibility = 'hidden';
+//             target.style.display = 'none';
+//             limit.style.display = 'none';
 //             replay.textContent = 'Click to Replay!';
 
-//             result.style.visibility = 'visible';
-//             replay.style.visibility = 'visible';
+//             result.style.display = 'block';
+//             replay.style.display = 'block';
 //             return;
 //         }
 //         setWord();
